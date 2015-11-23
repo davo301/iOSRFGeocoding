@@ -1,6 +1,5 @@
 //
 //  GeocodeHelper.m
-//  Meteo4Free
 //
 //  Created by Davit Siradeghyan on 9/21/15.
 //  Copyright © 2015 DavitSiradeghyan. All rights reserved.

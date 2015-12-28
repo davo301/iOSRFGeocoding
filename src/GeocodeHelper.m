@@ -19,8 +19,7 @@
 @implementation GeocodeHelper
 
 #pragma mark - Static methods
-+ (id)SharedManager
-{
++ (id)SharedManager {
     static GeocodeHelper *sharedGeocoderHelper = nil;
     static dispatch_once_t onceToken;
     
@@ -32,8 +31,7 @@
 }
 
 #pragma mark - GeocodeHelper methods implementation
-- (id)init
-{
+- (id)init {
     if ( self = [super init] ) {
         self.m_locationManager = [[CLLocationManager alloc] init];
         self.m_locationManager.delegate = self;
@@ -50,44 +48,40 @@
     return self;
 }
 
-- (void)GetLocationCoordinates:(NSString*)locationName
-{
+- (void)getLocationCoordinates:(NSString*)locationName {
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:locationName completionHandler:^(NSArray *placemarks, NSError *error) {
         if (error) {
-            [self.geocoderHelperDelegate DidFailedForwardGeocoding:error];
+            [self.delegate didFailedForwardGeocoding:error];
         } else {
             CLPlacemark *placemark = [placemarks lastObject];
-            [self.geocoderHelperDelegate DidReceivedLocationCoordinates:placemark.location];
+            [self.delegate didReceivedLocationCoordinates:placemark.location];
         }
     }];
 }
 
 #pragma mark - CLLocationManagerDelegate
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-{
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     self.m_location = [locations lastObject];
     
-    [self.geocoderHelperDelegate DidUpdateLocations:locations];
+    [self.delegate didUpdateLocations:locations];
     [self reverseGeocode:self.m_location];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    [self.geocoderHelperDelegate DidFailWithError:error];
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    [self.delegate didFailWithError:error];
 }
 
 #pragma mark - CLGeocoder method
-- (void)reverseGeocode:(CLLocation *)location
-{
+- (void)reverseGeocode:(CLLocation *)location {
     CLGeocoder *geocoder = [CLGeocoder new];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
          if (error) {
-             [self.geocoderHelperDelegate DidFailedReverseGeocoding:error];
+             [self.delegate didFailedReverseGeocoding:error];
          } else {
              CLPlacemark *placemark = [placemarks lastObject];
-             [self.geocoderHelperDelegate DidUpdatePlacemark:placemark];
+             [self.delegate didUpdatePlacemark:placemark];
          }
      }];
 }

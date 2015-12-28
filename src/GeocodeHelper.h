@@ -12,20 +12,20 @@
 
 @protocol GeocodeHelperDelegate <NSObject>
 
-- (void)DidUpdatePlacemark:(CLPlacemark*)placemark;
-- (void)DidReceivedLocationCoordinates:(CLLocation*)location;
+- (void)didUpdatePlacemark:(CLPlacemark*)placemark;
+- (void)didReceivedLocationCoordinates:(CLLocation*)location;
 
 @optional
-- (void)DidUpdateLocations:(NSArray *)locations;
-- (void)DidFailWithError:(NSError *)error;
-- (void)DidFailedReverseGeocoding:(NSError *)error;
-- (void)DidFailedForwardGeocoding:(NSError *)error;
+- (void)didUpdateLocations:(NSArray *)locations;
+- (void)didFailWithError:(NSError *)error;
+- (void)didFailedReverseGeocoding:(NSError *)error;
+- (void)didFailedForwardGeocoding:(NSError *)error;
 
 @end
 
 @interface GeocodeHelper : NSObject
 
-@property (nonatomic, assign) id <GeocodeHelperDelegate> geocoderHelperDelegate;
+@property (nonatomic, assign) id <GeocodeHelperDelegate> delegate;
 
 #pragma mark - Static methods
 + (id)SharedManager;
@@ -41,6 +41,6 @@
 // Call this method with location name and get update about
 // failed forward geocoding or location info in case of success
 // via GeocodeHelperDelegate's DidReceivedLocationCoordinates method.
-- (void)GetLocationCoordinates:(NSString*)locationName;
+- (void)getLocationCoordinates:(NSString*)locationName;
 
 @end
